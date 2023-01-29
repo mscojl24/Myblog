@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
 
-*{box-sizing:border-box; cursor: url(https://cur.cursors-4u.net/others/oth-1/oth69.cur), auto !important;}
+*{box-sizing:border-box; cursor: url(https://cur.cursors-4u.net/others/oth-1/oth69.cur), auto !important; word-break: break-all;}
 .App {
   text-align: center;
   font-family: 'Noto Sans KR', sans-serif;
@@ -28,6 +28,7 @@ li{list-style:  none; text-align: left;}
   border-right: 1px solid rgb(230,230,230);
 
 }
+
 
 /*---------------footer.css-----------------*/
 
@@ -98,6 +99,7 @@ footer{
 }
 
 .user__name{
+  max-width: 160px;
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
