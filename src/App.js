@@ -57,7 +57,7 @@ function Menu() {
         <p> MENU </p>
       </div>
       <ul className='menu__list'>
-        <li><FontAwesomeIcon icon={faFolder} /> Memonote <div className='post__length'>0</div></li>
+        <li><FontAwesomeIcon icon={faFolder} /> Memonote <div className='post__length'>{dummyPost.length}</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> Html/css <div className='post__length'>0</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> Javascript <div className='post__length'>0</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> react <div className='post__length'>0</div></li>
@@ -116,7 +116,10 @@ function Memolist() {
       content : memo,
       createdAt : new Date().toLocaleDateString('ko-kr'),
     };
-    setPost([post, ...posts])
+
+    if(username === "" || memo === ""){ alert("이름과 내용을 모두 입력해주세요.") }
+    else {setPost([post, ...posts]); setUsername(""); setMemo("");}
+
   };
   
 
