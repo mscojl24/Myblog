@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import dummyPost from './dummydata/dummyData';
 import './App.css';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faFolder } from "@fortawesome/free-regular-svg-icons";
+import { faFolder,faCircleXmark,faStar } from "@fortawesome/free-regular-svg-icons";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function Profile() {
 
     <div id="user_profile">
       <div className="user_profile_img">
-        <img src="https://i.imgur.com/C8pjaE6.png" />
+        <img src="https://i.imgur.com/C8pjaE6.png" alt="iconimage"/>
       </div>
       <div className="user_profile_textbox">
         <div className="user__name">JubeeCode</div>
@@ -83,6 +84,30 @@ function Submenu() {
 
 function Memolist() {
 
+  const [posts, setPost] = useState(dummyPost)
+  const [username, setUsername] = useState("")
+  const [memo, setMemo ] = useState("")
+
+  const handleChangeName = (e) => {
+    setUsername(e.target.value)
+  };
+
+  const handleChangeMemo = (e) => {
+    setMemo(e.target.value)
+  };
+
+  const handleClickBtn = (e) => {
+    const post = {
+      id: dummyPost.length,
+      username: username,
+      picture: "https://i.imgur.com/GBIyZf5.png",
+      content : memo,
+      createdAt : new Date().toLocaleDateString('ko-kr'),
+    };
+    setPost([posts, ...posts])
+  };
+  
+
   return (
 
     <div className='memo_list_box'>
@@ -93,46 +118,45 @@ function Memolist() {
       <div className='posting__box memo__notice'>
         <select name="icon">
             <option value="">Select icon</option>
-            <option value="icon1">icon_01</option>
-            <option value="icon2">icon_02</option>
-            <option value="icon3">icon_03</option>
-            <option value="icon4">icon_04</option>
+            <option value="https://i.imgur.com/GBIyZf5.png">icon_01</option>
+            <option value="https://i.imgur.com/uqyWEHw.png">icon_02</option>
+            <option value="https://i.imgur.com/5txsjOR.png">icon_03</option>
+            <option value="https://i.imgur.com/z5J7otb.png">icon_04</option>
         </select>
-        <input className='post_input' placeholder='닉네임'/>
-        <input className='post_input' placeholder='오늘의 이야기를 들려주세요'/>
+        <input className='post_input' placeholder='닉네임' value={username} onChange={handleChangeName}/>
+        <input className='post_input' placeholder='오늘의 이야기를 들려주세요' value={memo} onChange={handleChangeMemo}/>
+        <button className='post_btn' onClick={handleClickBtn}> Submit </button>
       </div>
       <ul className='memo__list'>
-        <Post />
-        <Post2 />
-        <Post />
-        <Post3 />
-        <Post />
-        <Post />
-
+       { posts.map(el => <Post posts={el}/>) }
       </ul>
     </div>
   )
 }
 
-function Post() {
+function Post({posts}) {
+
+  const [count, setCount] = useState(0);
+
   return(
   
   <li className='post__box'>
     <div className='post__user'>
-      <img src="https://i.imgur.com/C8pjaE6.png" alt='iconimage' />
+      <img src={posts.picture} alt='iconimage' />
       <div>
-        <span className="user__name">JUBEE</span>
-        <span className='post_date'>23.01.27</span>
+        <span className="user__name">{posts.username}</span>
+        <span className='post_date'>{posts.createdAt}</span>
       </div>
+      <div className='post_Xmark'><FontAwesomeIcon icon={faCircleXmark} /></div>
     </div>
     <div className='post__cuntents'>
       <p>
-        여기에 내용이 들어갑니다.
+      {posts.content}
       </p>
     </div>
     <div className='post_click_icon'>
-      <span><FontAwesomeIcon icon={faHeart} /> 1</span>
-      <span>☆</span>
+      <span onClick={()=> setCount(count + 1) }><FontAwesomeIcon icon={faHeart} /> {count}</span>
+      <span><FontAwesomeIcon icon={faStar}></FontAwesomeIcon></span>
     </div>
     <div></div>
   </li>
@@ -140,56 +164,6 @@ function Post() {
 )}
 
 
-function Post2() {
-  return(
-  
-  <li className='post__box'>
-    <div className='post__user'>
-      <img src="https://i.imgur.com/C8pjaE6.png" alt='iconimage' />
-      <div>
-        <span className="user__name">JUBEE</span>
-        <span className='post_date'>23.01.27</span>
-      </div>
-    </div>
-    <div className='post__cuntents'>
-      <p>
-      여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 여기에 내용이 들어갑니다. 
-      </p>
-    </div>
-    <div className='post_click_icon'>
-      <span><FontAwesomeIcon icon={faHeart} /> 0</span>
-      <span>☆</span>
-    </div>
-    <div></div>
-  </li>
-  
-)}
-
-
-function Post3() {
-  return(
-  
-  <li className='post__box'>
-    <div className='post__user'>
-      <img src="https://i.imgur.com/C8pjaE6.png" alt='iconimage' />
-      <div>
-        <span className="user__name">JUBEE</span>
-        <span className='post_date'>23.01.27</span>
-      </div>
-    </div>
-    <div className='post__cuntents'>
-      <p>
-      여기에 내용이 들어갑니다.여기에 내용이 들어갑니다.여기에 내용이 들어갑니다.여기에 내용이 들어갑니다.
-      </p>
-    </div>
-    <div className='post_click_icon'>
-      <span><FontAwesomeIcon icon={faHeart} /> 1</span>
-      <span>☆</span>
-    </div>
-    <div></div>
-  </li>
-  
-)}
 
 function Footer() {
   return (
