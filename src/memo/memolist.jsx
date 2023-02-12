@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import Post from './post.jsx';
 
-function Memolist() {
+function Memolist({dummyPost}) {
 
-    const dummyPost = [];
     const [posts, setPost] = useState(dummyPost)
     const [username, setUsername] = useState("")
     const [memo, setMemo] = useState("")
     const [icon, setIcon] = useState("https://i.imgur.com/uqyWEHw.png")
 
-    const icons = ["https://i.imgur.com/uqyWEHw.png", "https://i.imgur.com/GBIyZf5.png", "https://i.imgur.com/uuZlAF9.png", "https://i.imgur.com/z5J7otb.png", "https://i.imgur.com/Adka0G5.png"];
+    const iconimg = ["https://i.imgur.com/uqyWEHw.png", "https://i.imgur.com/GBIyZf5.png", "https://i.imgur.com/uuZlAF9.png", "https://i.imgur.com/z5J7otb.png", "https://i.imgur.com/Adka0G5.png"];
     const iconname = ["icon_01", "icon_02", "icon_03", "icon_04", "icon_05"];
 
-    const options = icons.map((icons, i) => {
-        return <option value={icons}>{iconname[i]}</option>
+    const options = iconimg.map((iconimg, i) => {
+        return <option key={iconimg+i} value={iconimg}>{iconname[i]}</option>
     });
 
     const handleIcon = (e) => { // 아이콘 선택박스
