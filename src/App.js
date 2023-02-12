@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import dummyPost from './dummydata/dummyData';
 import './App.css';
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faFolder,faCircleXmark,faStar } from "@fortawesome/free-regular-svg-icons";
+import { faHeart,faReply } from "@fortawesome/free-solid-svg-icons";
+import { faFolder,faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+//import { render } from '@testing-library/react';
 
 function App() {
+
   return (
     <div className="App">
       <div className='App__sidebar'>
@@ -57,7 +57,7 @@ function Menu() {
         <p> MENU </p>
       </div>
       <ul className='menu__list'>
-        <li><FontAwesomeIcon icon={faFolder} /> Memonote <div className='post__length'>{dummyPost.length}</div></li>
+        <li><FontAwesomeIcon icon={faFolder} /> Memonote <div className='post__length'>0</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> Html/css <div className='post__length'>0</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> Javascript <div className='post__length'>0</div></li>
         <li><FontAwesomeIcon icon={faFolder} /> react <div className='post__length'>0</div></li>
@@ -82,21 +82,23 @@ function Submenu() {
   )
 }
 
-function Memolist() {
 
+function Memolist() {
+  
+  const dummyPost = [];
   const [posts, setPost] = useState(dummyPost)
   const [username, setUsername] = useState("")
   const [memo, setMemo ] = useState("")
   const [icon, setIcon ] = useState("https://i.imgur.com/uqyWEHw.png")
 
-  const icons = ["https://i.imgur.com/uqyWEHw.png","https://i.imgur.com/GBIyZf5.png","https://i.imgur.com/uuZlAF9.png","https://i.imgur.com/z5J7otb.png"];
-  const iconname = ["icon_01","icon_02","icon_03","icon_04"];
+  const icons = ["https://i.imgur.com/uqyWEHw.png","https://i.imgur.com/GBIyZf5.png","https://i.imgur.com/uuZlAF9.png","https://i.imgur.com/z5J7otb.png","https://i.imgur.com/Adka0G5.png"];
+  const iconname = ["icon_01","icon_02","icon_03","icon_04","icon_05"];
 
   const options = icons.map((icons,i) => {
       return <option value={icons}>{iconname[i]}</option>
   });
 
-  const handleIcon = (e) => { //아이콘 선택박스
+  const handleIcon = (e) => { // 아이콘 선택박스
     setIcon(e.target.value)
   };
 
@@ -108,19 +110,21 @@ function Memolist() {
     setMemo(e.target.value)
   };
 
-  const handleClickBtn = (e) => { // 클릭 시 포스팅
+  const handleClickBtn = (e) => { // 버튼 클릭 시 포스팅
     const post = {
-      id: dummyPost.length,
+      id: posts.length,
       username: username,
       picture: icon,
       content : memo,
       createdAt : new Date().toLocaleDateString('ko-kr'),
+      like : 0,
     };
 
-    if(username === "" || memo === ""){ alert("이름과 내용을 모두 입력해주세요.") }
+    if(username === "" || memo === ""){ alert("이름과 내용을 입력하지 않으면 작성이 안돼요!") }
     else {setPost([post, ...posts]); setUsername(""); setMemo("");}
 
   };
+
   
 
   return (
@@ -137,15 +141,32 @@ function Memolist() {
         <button className='post_btn' onClick={handleClickBtn}> Submit </button>
       </div>
       <ul className='memo__list'>
-       { posts.map(el => <Post posts={el}/>) }
+        { posts.map((el) => <Post key={el.id} posts={el}/>) }
       </ul>
     </div>
   )
 }
 
+
 function Post({posts}) {
 
   const [count, setCount] = useState(0);
+  const [star, setStar] = useState('☆')
+  const [modal, setModal] = useState(false)
+  const handleDel = () => { // 버튼 클릭 시 삭제
+    let copy = [...posts];
+    console.log(copy)
+  };
+
+  const likeBtn =() =>{
+    posts.like = count;
+    setCount(count + 1);
+  }
+
+  const starChange = () => {
+    star === '★' ? setStar('☆') : setStar('★')
+  }
+
 
   return(
   
@@ -156,7 +177,7 @@ function Post({posts}) {
         <span className="user__name">{posts.username}</span>
         <span className='post_date'>{posts.createdAt}</span>
       </div>
-      <div className='post_Xmark'><FontAwesomeIcon icon={faCircleXmark} /></div>
+      <div className='post_Xmark' onClick={handleDel}><FontAwesomeIcon icon={faCircleXmark} /></div>
     </div>
     <div className='post__cuntents'>
       <p>
@@ -164,14 +185,64 @@ function Post({posts}) {
       </p>
     </div>
     <div className='post_click_icon'>
-      <span onClick={()=> setCount(count + 1) }><FontAwesomeIcon icon={faHeart} /> {count}</span>
-      <span><FontAwesomeIcon icon={faStar}></FontAwesomeIcon></span>
+      <span onClick={likeBtn}><FontAwesomeIcon icon={faHeart} /> {count}</span>
+      <span onClick={starChange}>{star}</span>
+      <span onClick={()=>{ setModal(!modal) }}><FontAwesomeIcon icon={faReply} /></span>
     </div>
-    <div></div>
+  
+      { modal === true ? <Reply /> : null}
   </li>
   
 )}
 
+
+
+function Reply () {
+
+
+  const dummyReply = [];
+  const [replys, setReplys] = useState(dummyReply)
+  const [text, setText ] = useState("")
+  const handleClickBtn = (e) => { // 버튼 클릭 시 리플 포스팅
+    const re = {
+      id: replys.length,
+      username: '익명',
+      content : text,
+    };
+    
+    if(text === ""){ alert("어라? 덧글내용을 안쓰신듯...") }
+    else {setReplys([re, ...replys]); setText("");}
+  };
+
+  const handleChangetext = (e) => {
+    setText(e.target.value)
+  };
+
+  return(
+
+    <div className='reply'>
+      <div className='reply__post_input'>
+        <input placeholder='내용을 입력해주세요.' type='text' value={text} onChange={handleChangetext}/>
+        <button onClick={handleClickBtn}>SEND</button>
+      </div>
+        <ul>
+          { replys.map((el) => <Replydata key={el.id} reply={el}/>) }
+        </ul>
+    </div>
+  
+  )
+}
+
+
+function Replydata ({reply}){
+
+  return(
+    <li className='reply__post_list'>
+          <span>{reply.username}</span>
+          <span>{reply.content}</span>
+    </li>
+  )
+}
 
 
 function Footer() {
