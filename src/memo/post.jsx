@@ -4,16 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart,faReply } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
-function Post({ posts }) {
+function Post({ posts, deleteEvent }) {
 
     const [count, setCount] = useState(0);
     const [star, setStar] = useState('☆')
     const [modal, setModal] = useState(false)
 
-    const handleDel = () => { // 버튼 클릭 시 삭제
-        let copy = [...posts];
-        console.log(copy)
-        };
+
+    const handleDel = (e) => { 
+        e.preventDefault();
+
+        let postId = posts.id
+        deleteEvent({ postId })
+        
+    };
 
     const likeBtn = () => { posts.like = count; setCount(count + 1); }
     const starChange = () => { star === '★' ? setStar('☆') : setStar('★') }
@@ -29,7 +33,7 @@ function Post({ posts }) {
                 </div>
                 <div className='post_Xmark' onClick={handleDel}><FontAwesomeIcon icon={faCircleXmark} /></div>
             </div>
-            <div className='post__cuntents'>
+            <div className='post__cuntents' >
                 <p>
                     {posts.content}
                 </p>
