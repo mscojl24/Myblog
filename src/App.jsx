@@ -65,6 +65,25 @@ function App() {
     }
   }
 
+  function updateEvent({ postId, text }) {
+
+    console.log(postId)
+    // console.log(text)
+
+    let update = {content:`${text}`}
+
+    console.log(update)
+
+    fetch(`http://localhost:4000/discussions/${postId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(update) // 아까 포장해놨던 newObj를 조심스레 POST 아저씨한테 건낸다.
+      })
+        .then(response => response.json()) // 택배가 왔다. 포장을까자
+        .then((data) => { setDummyPost(data) })
+    
+  }
+
 
   return (
     <BrowserRouter>
@@ -74,7 +93,7 @@ function App() {
         </div>
         <div className='App__main'>
           <Routes>
-            <Route path="/" element={<Memolist dummyPost={dummyPost} newpost={newpost} deleteEvent={deleteEvent} />} />
+            <Route path="/" element={<Memolist dummyPost={dummyPost} newpost={newpost} deleteEvent={deleteEvent} updateEvent={updateEvent}/>} />
             <Route path="/xpage" element={<Xpage />} />
           </Routes>
         </div>

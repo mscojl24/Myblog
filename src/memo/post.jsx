@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Reply from './reply.jsx'
+import Update from './update.jsx'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart,faReply } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
-function Post({ posts, deleteEvent }) {
+function Post({ posts, deleteEvent, updateEvent }) {
 
     const [count, setCount] = useState(0);
     const [star, setStar] = useState('☆')
     const [modal, setModal] = useState(false)
-
+    const [updateModal, setUpdateModal] = useState(false)
+    const [value, setValue] = useState('')
 
     const handleDel = (e) => { 
         e.preventDefault();
@@ -19,8 +21,16 @@ function Post({ posts, deleteEvent }) {
         
     };
 
+    const hendleUpdate = (e) =>{
+        let postId = posts.id
+        updateEvent({ postId })
+        setUpdateModal(!updateModal)
+        setValue(posts.content)
+    }
+
     const likeBtn = () => { posts.like = count; setCount(count + 1); }
     const starChange = () => { star === '★' ? setStar('☆') : setStar('★') }
+
 
     return (
 
@@ -42,7 +52,9 @@ function Post({ posts, deleteEvent }) {
                 <span onClick={likeBtn}><FontAwesomeIcon icon={faHeart} /> {count}</span>
                 <span onClick={starChange}>{star}</span>
                 <span onClick={() => { setModal(!modal) }}><FontAwesomeIcon icon={faReply} /></span>
+                <span onClick={hendleUpdate}>수정</span>
             </div>
+            {updateModal === true ? <Update value={value} updateEvent={updateEvent}/> : null}
             {modal === true ? <Reply /> : null}
         </li>
 

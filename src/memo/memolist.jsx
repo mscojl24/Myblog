@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Post from './post.jsx';
 
-function Memolist({ dummyPost,newpost,deleteEvent }) { 
+function Memolist({ dummyPost,newpost,deleteEvent,updateEvent }) { 
 
     const [username, setUsername] = useState("")
     const [memo, setMemo] = useState("")
@@ -55,7 +55,7 @@ function Memolist({ dummyPost,newpost,deleteEvent }) {
                 <button className='post_btn' onClick={handleClickBtn}> Submit </button> 
             </div>
             <ul className='memo__list'>
-                {dummyPost.map((el) => <Post key={el.id} posts={el} deleteEvent={deleteEvent}/>)} 
+                {dummyPost.map((el) => <Post key={el.id} posts={el} deleteEvent={deleteEvent} updateEvent={updateEvent}/>)} 
             </ul>
         </div>
     )
