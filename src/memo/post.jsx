@@ -12,6 +12,7 @@ function Post({ posts, deleteEvent, updateEvent }) {
     const [modal, setModal] = useState(false)
     const [updateModal, setUpdateModal] = useState(false)
     const [value, setValue] = useState('')
+    const [postId, setPostId] = useState('')
 
     const handleDel = (e) => { 
         e.preventDefault();
@@ -22,10 +23,9 @@ function Post({ posts, deleteEvent, updateEvent }) {
     };
 
     const hendleUpdate = (e) =>{
-        let postId = posts.id
-        updateEvent({ postId })
         setUpdateModal(!updateModal)
         setValue(posts.content)
+        setPostId(posts.id)
     }
 
     const likeBtn = () => { posts.like = count; setCount(count + 1); }
@@ -54,7 +54,7 @@ function Post({ posts, deleteEvent, updateEvent }) {
                 <span onClick={() => { setModal(!modal) }}><FontAwesomeIcon icon={faReply} /></span>
                 <span onClick={hendleUpdate}>수정</span>
             </div>
-            {updateModal === true ? <Update value={value} updateEvent={updateEvent}/> : null}
+            {updateModal === true ? <Update value={value} updateEvent={updateEvent} postId={postId} setUpdateModal={setUpdateModal}/> : null}
             {modal === true ? <Reply /> : null}
         </li>
 

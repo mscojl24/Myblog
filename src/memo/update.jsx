@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Update({value,updateEvent}) {
+function Update({value,updateEvent,postId,setUpdateModal}) {
 
     const [text, setText] = useState(value)
 
@@ -9,7 +9,8 @@ function Update({value,updateEvent}) {
     };
 
     const handleClickBtn = (e) => {
-        updateEvent({text})
+        updateEvent({text,postId})
+        setUpdateModal(false)
     };
 
     return (

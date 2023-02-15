@@ -67,10 +67,10 @@ function App() {
 
   function updateEvent({ postId, text }) {
 
-    console.log(postId)
-    // console.log(text)
+    console.log(`${postId} : 아이디가 잘 출력되네요?`)
 
-    let update = {content:`${text}`}
+
+    let update = {content:text}
 
     console.log(update)
 
